@@ -53,8 +53,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@graphql-tools/code-file-loader": "^7.2.3",
-    "@graphql-tools/mock": "^8.6.3",
+    "@graphql-tools/code-file-loader": "^7.2.17",
+    "@graphql-tools/mock": "^8.6.11",
     "@graphql-yoga/node": "2.9.0",
     "graphql-config": "^4.1.0",
     "tslib": "^2.3.1",
