@@ -72,6 +72,7 @@ import {
   isPOSTFormUrlEncodedRequest,
   parsePOSTFormUrlEncodedRequest,
 } from './plugins/requestParser/POSTFormUrlEncoded'
+import { handleError } from './GraphQLYogaError'
 
 interface OptionsWithPlugins<TContext> {
   /**
@@ -212,11 +213,9 @@ export class YogaServer<
   protected plugins: Array<
     Plugin<TUserContext & TServerContext & YogaInitialContext, TServerContext>
   >
-  private onRequestParseHooks: OnRequestParseHook<TServerContext>[]
+  private onRequestParseHooks: OnRequestParseHook[]
   private onRequestHooks: OnRequestHook<TServerContext>[]
-  private onResultProcessHooks: OnResultProcess<
-    TUserContext & TServerContext & YogaInitialContext
-  >[]
+  private onResultProcessHooks: OnResultProcess[]
   private onResponseHooks: OnResponseHook<TServerContext>[]
   private id: string
 
@@ -444,7 +443,6 @@ export class YogaServer<
 
       for (const onRequestParse of this.onRequestParseHooks) {
         const onRequestParseResult = await onRequestParse({
-          serverContext,
           request,
           requestParser,
           setRequestParser(parser: RequestParser) {
@@ -465,19 +463,7 @@ export class YogaServer<
         })
       }
 
-      let params: GraphQLParams<Record<string, any>, Record<string, any>>
-      try {
-        params = await requestParser(request)
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          return getErrorResponse({
-            status: 400,
-            errors: [err],
-            fetchAPI: this.fetchAPI,
-          })
-        }
-        throw err
-      }
+      let params = await requestParser(request)
 
       for (const onRequestParseDone of onRequestParseDoneList) {
         await onRequestParseDone({
@@ -492,7 +478,7 @@ export class YogaServer<
         request,
         ...params,
         ...serverContext,
-      } as YogaInitialContext & TServerContext
+      }
 
       const enveloped = this.getEnveloped(initialContext)
 
@@ -507,10 +493,10 @@ export class YogaServer<
       })
 
       return result
-    } catch (error: unknown) {
+    } catch (error: any) {
       return getErrorResponse({
-        status: 500,
-        errors: [new Error((error as Error)?.message ?? 'Unexpected Error.')],
+        status: 200,
+        errors: handleError(error),
         fetchAPI: this.fetchAPI,
       })
     }

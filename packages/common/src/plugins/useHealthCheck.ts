@@ -1,4 +1,4 @@
-import { GraphQLYogaError } from '../GraphQLYogaError'
+import { createGraphQLError } from '@graphql-tools/utils'
 import { YogaLogger } from '../logger'
 import { Plugin } from './types'
 
@@ -52,7 +52,7 @@ export function useHealthCheck(options?: HealthCheckPluginOptions): Plugin {
           )
           endResponse(response)
         } else {
-          throw new GraphQLYogaError(
+          throw createGraphQLError(
             `Readiness check failed with status ${readinessResponse.status}`,
           )
         }
