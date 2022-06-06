@@ -5,7 +5,7 @@ let browser: puppeteer.Browser;
 let page: puppeteer.Page;
 let sveltekitProcess: ReturnType<typeof spawn>;
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe('SvelteKit integration', () => {
 	beforeAll(async () => {
