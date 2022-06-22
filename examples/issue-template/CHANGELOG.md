@@ -1,5 +1,12 @@
 # issue-template
 
+## 1.9.3
+
+### Patch Changes
+
+- Updated dependencies [8922c3b]
+  - @graphql-yoga/node@2.9.3
+
 ## 1.9.2
 
 ### Patch Changes

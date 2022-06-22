@@ -1,6 +1,6 @@
 {
 	"name": "sveltekit",
-	"version": "0.8.3",
+	"version": "0.8.4",
 	"private": true,
 	"scripts": {
 		"prepare": "svelte-kit sync",
@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"@envelop/graphql-jit": "4.2.3",
-		"@graphql-yoga/common": "2.8.3",
+		"@graphql-yoga/common": "2.8.4",
 		"graphql": "16.5.0"
 	},
 	"type": "module"
